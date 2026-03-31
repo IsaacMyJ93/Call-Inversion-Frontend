@@ -10,80 +10,29 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-// IMPORTANTE: Importamos Supabase y los Toasts para login de supabase
-import { supabase } from "@/lib/supabase";
-import { toast } from "sonner";
+
+
 
 export default function LoginPage() {
   const router = useRouter();
+  
+ 
 
-  // 1. Estados para guardar lo que el usuario escribe
-  const [isLoading, setIsLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-
-  // 2. Función para INICIAR SESIÓN 
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-
-      toast.success("¡Bienvenido de nuevo!");
-      router.push("/dashboard");
-    } catch (error: any) {
-      toast.error(error.message || "Error al iniciar sesión");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // 3. Función para REGISTRARSE 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { full_name: name } // Guardamos el nombre también
-        }
-      });
-
-      if (error) throw error;
-
-      toast.success("Usuario registrado correctamente. ¡Ya estás dentro!");
-      // Opcional: router.push("/dashboard"); si quieres que entre directo al registrarse
-    } catch (error: any) {
-      console.error("Error capturado:", error.message);
-      toast.error(error.message || "Error al registrar usuario");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  
 
   return (
     <div className="min-h-screen bg-background flex">
-      {/* --- PANEL IZQUIERDO (Branding) --- */}
+     
       <div className="hidden lg:flex lg:w-1/2 bg-primary p-12 flex-col justify-between">
         <div>
           <Link href="/" className="flex items-center gap-2 text-primary-foreground">
             <div className="w-10 h-10 bg-primary-foreground/20 rounded-lg flex items-center justify-center">
               <TrendingUp className="w-6 h-6 text-primary-foreground" />
             </div>
-            <span className="text-2xl font-semibold">CALL INVERSION</span>
+            <span className="text-2xl font-semibold">RiskParity</span>
           </Link>
         </div>
-
+        
         <div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -101,7 +50,7 @@ export default function LoginPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-primary-foreground/80 text-lg max-w-md"
           >
-            Join thousands of investors using risk parity strategies to build
+            Join thousands of investors using risk parity strategies to build 
             balanced portfolios and achieve their financial goals.
           </motion.p>
         </div>
@@ -109,10 +58,7 @@ export default function LoginPage() {
         <div className="flex items-center gap-6">
           <div className="flex -space-x-3">
             {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="w-10 h-10 rounded-full bg-primary-foreground/20 border-2 border-primary flex items-center justify-center"
-              >
+              <div key={i} className="w-10 h-10 rounded-full bg-primary-foreground/20 border-2 border-primary flex items-center justify-center">
                 <User className="w-5 h-5 text-primary-foreground/60" />
               </div>
             ))}
@@ -123,22 +69,14 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right Panel - Auth Form */}
+      {/* --- PANEL DERECHO (Formularios) --- */}
       <div className="flex-1 flex items-center justify-center p-6 lg:p-12">
         <div className="w-full max-w-md">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8 lg:hidden"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Home
+          <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8 lg:hidden">
+            <ArrowLeft className="w-4 h-4" /> Back to Home
           </Link>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <div className="lg:hidden flex items-center gap-2 mb-8">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <TrendingUp className="w-5 h-5 text-primary-foreground" />
@@ -159,9 +97,7 @@ export default function LoginPage() {
                 <Card className="border-0 shadow-none">
                   <CardHeader className="px-0 pt-0">
                     <CardTitle className="text-2xl">Welcome back</CardTitle>
-                    <CardDescription>
-                      Enter your credentials to access your portfolio
-                    </CardDescription>
+                    <CardDescription>Enter your credentials to access your portfolio</CardDescription>
                   </CardHeader>
                   <CardContent className="px-0 pb-0">
                     <form onSubmit={handleSignIn} className="space-y-4">
@@ -196,10 +132,7 @@ export default function LoginPage() {
                         </div>
                       </div>
                       <div className="flex items-center justify-end">
-                        <Link
-                          href="#"
-                          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                        >
+                        <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                           Forgot password?
                         </Link>
                       </div>
@@ -207,24 +140,6 @@ export default function LoginPage() {
                         {isLoading ? "Signing in..." : "Sign In"}
                       </Button>
                     </form>
-
-                    <div className="relative my-6">
-                      <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-border" />
-                      </div>
-                      <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-background px-2 text-muted-foreground">
-                          Or continue with
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-center">
-                      <Button variant="outline" type="button">
-                        <Chrome className="mr-2 w-4 h-4" />
-                        Google
-                      </Button>
-                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -235,21 +150,19 @@ export default function LoginPage() {
               <TabsContent value="signup">
                 <Card className="border-0 shadow-none">
                   <CardHeader className="px-0 pt-0">
-                    <CardTitle className="text-2xl">Crea Una Cuenta</CardTitle>
-                    <CardDescription>
-                      Comienza a construir tu cartera optimizada hoy
-                    </CardDescription>
+                    <CardTitle className="text-2xl">Create an account</CardTitle>
+                    <CardDescription>Start building your optimized portfolio today</CardDescription>
                   </CardHeader>
                   <CardContent className="px-0 pb-0">
                     <form onSubmit={handleSignUp} className="space-y-4">
                       <div className="space-y-2">
-                        <Label htmlFor="signup-name">Nombre completo</Label>
+                        <Label htmlFor="signup-name">Full Name</Label>
                         <div className="relative">
                           <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                           <Input
                             id="signup-name"
                             type="text"
-                            placeholder="Nombre Apellidos"
+                            placeholder="John Doe"
                             className="pl-10"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -258,7 +171,7 @@ export default function LoginPage() {
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="signup-email">Correo</Label>
+                        <Label htmlFor="signup-email">Email</Label>
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                           <Input
@@ -273,7 +186,7 @@ export default function LoginPage() {
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="signup-password">Contraseña</Label>
+                        <Label htmlFor="signup-password">Password</Label>
                         <div className="relative">
                           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                           <Input
@@ -287,42 +200,14 @@ export default function LoginPage() {
                           />
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground">
-                        Al registrarte, aceptas nuestros{" "}
-                        <Link href="/terminos" className="underline hover:text-foreground">
-                          Términos de Servicio
-                        </Link>
-                        {" "}y nuestra{" "}
-                        <Link href="/privacidad" className="underline hover:text-foreground">
-                          Política de Privacidad
-                        </Link>
-                        .
-                      </p>
                       <Button type="submit" className="w-full" disabled={isLoading}>
                         {isLoading ? "Creating account..." : "Create Account"}
                       </Button>
                     </form>
-
-                    <div className="relative my-6">
-                      <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-border" />
-                      </div>
-                      <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-background px-2 text-muted-foreground">
-                         O continuar con
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-center">
-                      <Button variant="outline" type="button">
-                        <Chrome className="mr-2 w-4 h-4" />
-                        Google
-                      </Button>
-                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
+
             </Tabs>
           </motion.div>
         </div>
