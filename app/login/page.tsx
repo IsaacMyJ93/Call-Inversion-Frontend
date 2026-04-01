@@ -71,6 +71,26 @@ export default function LoginPage() {
     }
   };
 
+  // 4. Función para LOGIN CON GOOGLE
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          // Esto le dice a Supabase a dónde volver después de que el usuario acepte en Google
+          redirectTo: `${window.location.origin}/dashboard`,
+        },
+      });
+
+      if (error) throw error;
+      // No ponemos toast de éxito aquí porque la página se redirigirá a la de Google automáticamente
+    } catch (error: any) {
+      toast.error(error.message || "Error al conectar con Google");
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background flex">
       {/* --- PANEL IZQUIERDO (Branding) --- */}
@@ -91,9 +111,9 @@ export default function LoginPage() {
             transition={{ duration: 0.6 }}
             className="text-4xl font-bold text-primary-foreground mb-6 leading-tight"
           >
-            Invest Smarter,
+            Invierte Inteligentemente,
             <br />
-            Not Harder.
+            No lo hagas difícil.
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -123,7 +143,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right Panel - Auth Form */}
+      {/*Panel derecho - Formulario de autenticación */}
       <div className="flex-1 flex items-center justify-center p-6 lg:p-12">
         <div className="w-full max-w-md">
           <Link
@@ -131,7 +151,7 @@ export default function LoginPage() {
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8 lg:hidden"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Home
+            Atras 
           </Link>
 
           <motion.div
@@ -148,12 +168,12 @@ export default function LoginPage() {
 
             <Tabs defaultValue="login" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-8">
-                <TabsTrigger value="login">Login</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                <TabsTrigger value="login">Acceso</TabsTrigger>
+                <TabsTrigger value="signup">Registro</TabsTrigger>
               </TabsList>
 
               {/* ======================================= */}
-              {/* TAB: LOGIN                                */}
+              {/*  LOGIN                                  */}
               {/* ======================================= */}
               <TabsContent value="login">
                 <Card className="border-0 shadow-none">
@@ -220,7 +240,7 @@ export default function LoginPage() {
                     </div>
 
                     <div className="flex justify-center">
-                      <Button variant="outline" type="button">
+                      <Button variant="outline" type="button" onClick={handleGoogleLogin} disabled={isLoading}>
                         <Chrome className="mr-2 w-4 h-4" />
                         Google
                       </Button>
@@ -230,7 +250,7 @@ export default function LoginPage() {
               </TabsContent>
 
               {/* ======================================= */}
-              {/* TAB: SIGN UP                              */}
+              {/*  SIGN UP                                */}
               {/* ======================================= */}
               <TabsContent value="signup">
                 <Card className="border-0 shadow-none">
@@ -309,13 +329,13 @@ export default function LoginPage() {
                       </div>
                       <div className="relative flex justify-center text-xs uppercase">
                         <span className="bg-background px-2 text-muted-foreground">
-                         O continuar con
+                          O continuar con
                         </span>
                       </div>
                     </div>
 
                     <div className="flex justify-center">
-                      <Button variant="outline" type="button">
+                      <Button variant="outline" type="button" onClick={handleGoogleLogin} disabled={isLoading}>
                         <Chrome className="mr-2 w-4 h-4" />
                         Google
                       </Button>
