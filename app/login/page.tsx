@@ -14,6 +14,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { supabase } from "@/lib/supabase";
 import toast from 'react-hot-toast';
 
+
 export default function LoginPage() {
   const router = useRouter();
 
@@ -38,21 +39,17 @@ export default function LoginPage() {
       if (error) {
         console.log("Error de Supabase:", error);
         throw error;
-
-        // // Interceptamos el mensaje por defecto de Supabase
-        // if (error.message) {
-        //   throw new Error("Usuario no registrado o contraseña incorrecta.");
-        // }
-        // // Si es otro tipo de error (ej. sin internet), lo lanzamos tal cual
-        // throw error; 
       }
 
-      toast.success("¡Bienvenido de nuevo!");
+      toast.success("¡Bienvenido de nuevo!", {
+        duration: 7000,
+      });
       router.push("/dashboard");
     } catch (error: any) {
       console.error("Error capturado en el catch:", error);
-      toast.error("Usuario no registrado o credenciales incorrectas");
-      // toast.error(error.message || "Error al iniciar sesión");
+     toast.error("Usuario no registrado o credenciales incorrectas", {
+        duration: 7000, // 7 segundos solo para este mensaje
+      });
     } finally {
       setIsLoading(false);
     }
@@ -74,11 +71,15 @@ export default function LoginPage() {
 
       if (error) throw error;
 
-      toast.success("Usuario registrado correctamente. ¡Ya estás dentro!");
+      toast.success("Usuario registrado correctamente. ¡Ya estás dentro!", {
+         duration: 7000,
+      });
       // Opcional: router.push("/dashboard"); si quieres que entre directo al registrarse
     } catch (error: any) {
       console.error("Error capturado:", error.message);
-      toast.error(error.message || "Error al registrar usuario");
+      toast.error(error.message || "Error al registrar usuario", {
+        duration: 7000,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -99,7 +100,9 @@ export default function LoginPage() {
       if (error) throw error;
       // No ponemos toast de éxito aquí porque la página se redirigirá a la de Google automáticamente
     } catch (error: any) {
-      toast.error(error.message || "Error al conectar con Google");
+      toast.error(error.message || "Error al conectar con Google", {
+        duration: 7000,
+      });
       setIsLoading(false);
     }
   };
