@@ -42,13 +42,13 @@ export default function LoginPage() {
       }
 
       toast.success("¡Bienvenido de nuevo!", {
-        duration: 7000,
+        duration: 4000,
       });
       router.push("/dashboard");
     } catch (error: any) {
       console.error("Error capturado en el catch:", error);
      toast.error("Usuario no registrado o credenciales incorrectas", {
-        duration: 7000, // 7 segundos solo para este mensaje
+        duration: 6000, 
       });
     } finally {
       setIsLoading(false);
@@ -71,14 +71,14 @@ export default function LoginPage() {
 
       if (error) throw error;
 
-      toast.success("Usuario registrado correctamente. ¡Ya estás dentro!", {
+      toast.success("Usuario registrado correctamente. ¡Confirma el enlace de verificación en tu correo electrónico!", {
          duration: 7000,
       });
       // Opcional: router.push("/dashboard"); si quieres que entre directo al registrarse
     } catch (error: any) {
       console.error("Error capturado:", error.message);
       toast.error(error.message || "Error al registrar usuario", {
-        duration: 7000,
+        duration: 5000,
       });
     } finally {
       setIsLoading(false);
@@ -101,7 +101,7 @@ export default function LoginPage() {
       // No ponemos toast de éxito aquí porque la página se redirigirá a la de Google automáticamente
     } catch (error: any) {
       toast.error(error.message || "Error al conectar con Google", {
-        duration: 7000,
+        duration: 5000,
       });
       setIsLoading(false);
     }
