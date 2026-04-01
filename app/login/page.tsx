@@ -47,8 +47,8 @@ export default function LoginPage() {
       router.push("/dashboard");
     } catch (error: any) {
       console.error("Error capturado en el catch:", error);
-     toast.error("Usuario no registrado o credenciales incorrectas", {
-        duration: 6000, 
+      toast.error("Usuario no registrado o credenciales incorrectas", {
+        duration: 6000,
       });
     } finally {
       setIsLoading(false);
@@ -72,7 +72,7 @@ export default function LoginPage() {
       if (error) throw error;
 
       toast.success("Usuario registrado correctamente. ¡Confirma el enlace de verificación en tu correo electrónico!", {
-         duration: 7000,
+        duration: 7000,
       });
       // Opcional: router.push("/dashboard"); si quieres que entre directo al registrarse
     } catch (error: any) {
@@ -137,8 +137,8 @@ export default function LoginPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-primary-foreground/80 text-lg max-w-md"
           >
-            Join thousands of investors using risk parity strategies to build
-            balanced portfolios and achieve their financial goals.
+            Únete a miles de inversores que utilizan estrategias de paridad de riesgo para construir
+            carteras equilibradas y alcanzar sus objetivos financieros.
           </motion.p>
         </div>
 
@@ -154,7 +154,7 @@ export default function LoginPage() {
             ))}
           </div>
           <p className="text-primary-foreground/70 text-sm">
-            <span className="text-primary-foreground font-semibold">10,000+</span> investors trust us
+            <span className="text-primary-foreground font-semibold">10,000+</span> inversores confían en nosotros
           </p>
         </div>
       </div>
@@ -167,7 +167,7 @@ export default function LoginPage() {
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8 lg:hidden"
           >
             <ArrowLeft className="w-4 h-4" />
-            Atras 
+            Atrás
           </Link>
 
           <motion.div
@@ -179,7 +179,7 @@ export default function LoginPage() {
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <TrendingUp className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="text-xl font-semibold text-foreground">RiskParity</span>
+              <span className="text-xl font-semibold text-foreground">Call-Inversion</span>
             </div>
 
             <Tabs defaultValue="login" className="w-full">
@@ -194,15 +194,15 @@ export default function LoginPage() {
               <TabsContent value="login">
                 <Card className="border-0 shadow-none">
                   <CardHeader className="px-0 pt-0">
-                    <CardTitle className="text-2xl">Welcome back</CardTitle>
+                    <CardTitle className="text-2xl">Bienvenido de nuevo</CardTitle>
                     <CardDescription>
-                      Enter your credentials to access your portfolio
+                      Introduce tus credenciales para acceder a tu cartera
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="px-0 pb-0">
                     <form onSubmit={handleSignIn} className="space-y-4">
                       <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
+                        <Label htmlFor="email">Correo electrónico</Label>
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                           <Input
@@ -217,7 +217,7 @@ export default function LoginPage() {
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="password">Contraseña</Label>
                         <div className="relative">
                           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                           <Input
@@ -236,11 +236,11 @@ export default function LoginPage() {
                           href="#"
                           className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                         >
-                          Forgot password?
+                          ¿Olvidaste tu contraseña?
                         </Link>
                       </div>
                       <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? "Signing in..." : "Sign In"}
+                        {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
                       </Button>
                     </form>
 
@@ -250,7 +250,7 @@ export default function LoginPage() {
                       </div>
                       <div className="relative flex justify-center text-xs uppercase">
                         <span className="bg-background px-2 text-muted-foreground">
-                          Or continue with
+                          O también puedes acceder o registrarte automáticamente con
                         </span>
                       </div>
                     </div>
