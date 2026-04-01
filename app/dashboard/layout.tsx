@@ -1,3 +1,4 @@
+// Layout para el dashboard, incluye la barra lateral y el header para móviles
 "use client";
 
 import { ReactNode } from "react";
@@ -9,8 +10,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/dashboard", label: "Calculator", icon: Calculator },
-  { href: "/dashboard/results", label: "Results", icon: PieChart },
+  { href: "/dashboard", label: "Calculadora", icon: Calculator },
+  { href: "/dashboard/results", label: "Resultados", icon: PieChart },
 ];
 
 export default function AppLayout({ children }: { children: ReactNode }) {
@@ -25,7 +26,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
             <div className="w-8 h-8 bg-sidebar-primary rounded-lg flex items-center justify-center">
               <TrendingUp className="w-5 h-5 text-sidebar-primary-foreground" />
             </div>
-            <span className="text-xl font-semibold text-sidebar-foreground">RiskParity</span>
+            <span className="text-xl font-semibold text-sidebar-foreground">Call-Inversion</span>
           </Link>
         </div>
 
@@ -66,7 +67,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
           <div className="flex gap-2 mt-2">
             <Button variant="ghost" size="sm" className="flex-1 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50">
               <Settings className="w-4 h-4 mr-2" />
-              Settings
+              Ajustes
             </Button>
             <Link href="/">
               <Button variant="ghost" size="sm" className="text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50">
@@ -84,7 +85,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <TrendingUp className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-lg font-semibold text-foreground">RiskParity</span>
+            <span className="text-lg font-semibold text-foreground">Call-Inversion</span>
           </Link>
           <div className="flex items-center gap-2">
             {navItems.map((item) => {

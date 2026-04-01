@@ -203,10 +203,10 @@ export default function CalculatorPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5 text-muted-foreground" />
-                  Risk Level
+                  Nivel de Riesgo
                 </CardTitle>
                 <CardDescription>
-                  Select your risk tolerance
+                  Selecciona el nivel de riesgo que estás dispuesto a asumir en tu cartera
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -247,16 +247,16 @@ export default function CalculatorPage() {
               <CardContent className="pt-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                   <div className="space-y-1">
-                    <p className="text-primary-foreground/70 text-sm">Investment Summary</p>
+                    <p className="text-primary-foreground/70 text-sm">Resumen de Inversión</p>
                     <div className="flex items-baseline gap-4 flex-wrap">
                       <span className="text-2xl font-bold">
                         €{parseInt(formData.initialCapital || "0").toLocaleString()}
                       </span>
                       <span className="text-primary-foreground/70">
-                        at {formData.expectedReturn}% target return
+                        a un {formData.expectedReturn}% de rentabilidad objetivo
                       </span>
                       <span className="text-primary-foreground/70 capitalize">
-                        • {formData.riskLevel} risk
+                        • {formData.riskLevel} riesgo
                       </span>
                     </div>
                   </div>
@@ -271,11 +271,11 @@ export default function CalculatorPage() {
                     {isCalculating ? (
                       <>
                         <Calculator className="mr-2 w-5 h-5 animate-pulse" />
-                        Calculating...
+                        Calculando...
                       </>
                     ) : (
                       <>
-                        Calculate Portfolio
+                        Calcular Portafolio
                         <ArrowRight className="ml-2 w-5 h-5" />
                       </>
                     )}

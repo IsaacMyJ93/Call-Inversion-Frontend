@@ -1,3 +1,4 @@
+// Pagina de resultados
 
 // Indica que este archivo es un componente del lado del cliente en Next.js
 "use client";
