@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 // IMPORTANTE: Importamos Supabase y los Toasts para login de supabase
 import { supabase } from "@/lib/supabase";
-import { toast } from "sonner";
+import toast from 'react-hot-toast';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -34,12 +34,25 @@ export default function LoginPage() {
         password,
       });
 
-      if (error) throw error;
+      // Si hay un error, lo interceptamos antes de que caiga al catch
+      if (error) {
+        console.log("Error de Supabase:", error);
+        throw error;
+
+        // // Interceptamos el mensaje por defecto de Supabase
+        // if (error.message) {
+        //   throw new Error("Usuario no registrado o contraseña incorrecta.");
+        // }
+        // // Si es otro tipo de error (ej. sin internet), lo lanzamos tal cual
+        // throw error; 
+      }
 
       toast.success("¡Bienvenido de nuevo!");
       router.push("/dashboard");
     } catch (error: any) {
-      toast.error(error.message || "Error al iniciar sesión");
+      console.error("Error capturado en el catch:", error);
+      toast.error("Usuario no registrado o credenciales incorrectas");
+      // toast.error(error.message || "Error al iniciar sesión");
     } finally {
       setIsLoading(false);
     }
