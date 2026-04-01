@@ -1,4 +1,6 @@
-
+/**
+ *   portfolio calculator
+ */
 // Indica que este archivo es un componente del lado del cliente en Next.js
 "use client";
 
@@ -16,9 +18,7 @@ import { Calculator, Euro, Percent, AlertTriangle, ArrowRight, TrendingUp, Shiel
 // Componentes UI personalizados
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 
 
@@ -44,10 +44,10 @@ export default function CalculatorPage() {
   const handleCalculate = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsCalculating(true);
-    
+
     // Simula un retardo para el cálculo (por ejemplo, llamada a API)
     await new Promise(resolve => setTimeout(resolve, 1500));
-    
+
     setIsCalculating(false);
     // Redirige a la página de resultados
     router.push("/dashboard/results");
@@ -70,9 +70,9 @@ export default function CalculatorPage() {
         transition={{ duration: 0.5 }}
         className="mb-8"
       >
-        <h1 className="text-3xl font-bold text-foreground mb-2">Portfolio Calculator</h1>
+        <h1 className="text-3xl font-bold text-foreground mb-2">Calculadora de cartera</h1>
         <p className="text-muted-foreground">
-          Configure your investment parameters to generate an optimized risk parity portfolio.
+          Configure sus parámetros de inversión para generar una cartera de riesgo paritario optimizada.
         </p>
       </motion.div>
 
@@ -89,10 +89,10 @@ export default function CalculatorPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Euro className="w-5 h-5 text-muted-foreground" />
-                  Initial Capital
+                  Capital Inicial
                 </CardTitle>
                 <CardDescription>
-                  Enter the amount you want to invest
+                  Ingrese la cantidad que desea invertir
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -114,18 +114,19 @@ export default function CalculatorPage() {
                   </div>
                   {/* Botones rápidos para seleccionar capital inicial */}
                   <div className="flex gap-2">
-                    {[5000, 10000, 25000, 50000].map((amount) => (
-                      <Button
-                        key={amount}
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setFormData({ ...formData, initialCapital: amount.toString() })}
-                        className={formData.initialCapital === amount.toString() ? "border-primary bg-primary/5" : ""}
-                      >
-                        €{amount.toLocaleString()}
-                      </Button>
-                    ))}
+                    {[5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000,
+                      50000].map((amount) => (
+                        <Button
+                          key={amount}
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setFormData({ ...formData, initialCapital: amount.toString() })}
+                          className={formData.initialCapital === amount.toString() ? "border-primary bg-primary/5" : ""}
+                        >
+                          €{amount.toLocaleString()}
+                        </Button>
+                      ))}
                   </div>
                 </div>
               </CardContent>
@@ -142,10 +143,10 @@ export default function CalculatorPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Percent className="w-5 h-5 text-muted-foreground" />
-                  Expected Return
+                  Retorno esperado
                 </CardTitle>
                 <CardDescription>
-                  Your target annual return percentage
+                  Su porcentaje de rentabilidad anual objetivo
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -183,9 +184,9 @@ export default function CalculatorPage() {
                   </div>
                   {/* Etiquetas de referencia para el slider */}
                   <div className="flex justify-between text-xs text-muted-foreground">
-                    <span>Conservative (1%)</span>
-                    <span>Moderate (10%)</span>
-                    <span>Aggressive (20%)</span>
+                    <span>Conservador (1%)</span>
+                    <span>Moderado (10%)</span>
+                    <span>Agresivo (20%)</span>
                   </div>
                 </div>
               </CardContent>
@@ -216,16 +217,14 @@ export default function CalculatorPage() {
                       key={level.value}
                       type="button"
                       onClick={() => setFormData({ ...formData, riskLevel: level.value })}
-                      className={`p-4 rounded-lg border-2 text-left transition-all ${
-                        formData.riskLevel === level.value
+                      className={`p-4 rounded-lg border-2 text-left transition-all ${formData.riskLevel === level.value
                           ? "border-primary bg-primary/5"
                           : "border-border hover:border-primary/30"
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center gap-3 mb-2">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                          formData.riskLevel === level.value ? "bg-primary text-primary-foreground" : "bg-secondary"
-                        }`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${formData.riskLevel === level.value ? "bg-primary text-primary-foreground" : "bg-secondary"
+                          }`}>
                           <level.icon className="w-5 h-5" />
                         </div>
                         <span className="font-semibold text-foreground">{level.label}</span>
