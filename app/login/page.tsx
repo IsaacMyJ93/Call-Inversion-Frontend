@@ -14,6 +14,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { supabase } from "@/lib/supabase";
 import toast from 'react-hot-toast';
 
+
 export default function LoginPage() {
   const router = useRouter();
 
@@ -38,13 +39,6 @@ export default function LoginPage() {
       if (error) {
         console.log("Error de Supabase:", error);
         throw error;
-
-        // // Interceptamos el mensaje por defecto de Supabase
-        // if (error.message) {
-        //   throw new Error("Usuario no registrado o contraseña incorrecta.");
-        // }
-        // // Si es otro tipo de error (ej. sin internet), lo lanzamos tal cual
-        // throw error; 
       }
 
       toast.success("¡Bienvenido de nuevo!");
@@ -52,7 +46,6 @@ export default function LoginPage() {
     } catch (error: any) {
       console.error("Error capturado en el catch:", error);
       toast.error("Usuario no registrado o credenciales incorrectas");
-      // toast.error(error.message || "Error al iniciar sesión");
     } finally {
       setIsLoading(false);
     }
