@@ -1,3 +1,5 @@
+// Esta es la pagina para login y registro de usuarios.
+// "use client" es necesario para usar hooks y estado en este componente, ya que Next.js 13+ tiene un enfoque de renderizado híbrido (server + client).
 "use client";
 
 import { useState } from "react";
@@ -23,6 +25,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   // 2. Función para INICIAR SESIÓN 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -58,6 +61,15 @@ export default function LoginPage() {
   // 3. Función para REGISTRARSE 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // VALIDACIÓN: Si no está marcado el checkbox, lanzamos toast y cortamos
+    if (!acceptedTerms) {
+      toast.error("Debes aceptar las condiciones y términos de privacidad para registrarte.", {
+        duration: 5000,
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -69,12 +81,28 @@ export default function LoginPage() {
         }
       });
 
+      if (error?.message?.includes("Password should be at least 8 characters")) {
+        toast.error("La contraseña debe tener al menos 8 caracteres.", {
+          duration: 5000,
+        });
+        setIsLoading(false);
+        return;
+      } else { // Por si encuentro otros errores de Supabase, para depuración
+        console.log("Respuesta de Supabase:", { data, error });
+      }
+
       if (error) throw error;
 
       toast.success("Usuario registrado correctamente. ¡Confirma el enlace de verificación en tu correo electrónico!", {
         duration: 7000,
       });
-      // Opcional: router.push("/dashboard"); si quieres que entre directo al registrarse
+
+      // 2. LIMPIEZA: todos los campos 
+      setEmail("");
+      setPassword("");
+      setName("");
+      setAcceptedTerms(false);
+
     } catch (error: any) {
       console.error("Error capturado:", error.message);
       toast.error(error.message || "Error al registrar usuario", {
@@ -187,19 +215,18 @@ export default function LoginPage() {
                 <TabsTrigger value="login">Acceso</TabsTrigger>
                 <TabsTrigger value="signup">Registro</TabsTrigger>
               </TabsList>
-
               {/* ======================================= */}
               {/*  LOGIN                                  */}
               {/* ======================================= */}
               <TabsContent value="login">
                 <Card className="border-0 shadow-none">
                   <CardHeader className="px-0 pt-0">
-                    <CardTitle className="text-2xl">Bienvenido de nuevo</CardTitle>
-                    <CardDescription>
-                      Introduce tus credenciales para acceder a tu cartera
+                    <CardTitle className="text-2xl text-center">Bienvenido</CardTitle>
+                    <CardDescription className="text-center">
+                      Introduce tus credenciales para acceder a tu cartera.
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="px-0 pb-0">
+                  <CardContent className="px-2 pb-0">
                     <form onSubmit={handleSignIn} className="space-y-4">
                       <div className="space-y-2">
                         <Label htmlFor="email">Correo electrónico</Label>
@@ -323,19 +350,29 @@ export default function LoginPage() {
                           />
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground">
-                        Al registrarte, aceptas nuestros{" "}
-                        <Link href="/terminos" className="underline hover:text-foreground">
-                          Términos de Servicio
-                        </Link>
-                        {" "}y nuestra{" "}
-                        <Link href="/privacidad" className="underline hover:text-foreground">
-                          Política de Privacidad
-                        </Link>
-                        .
-                      </p>
+                      {/* Contenedor del Checkbox */}
+                      <div className="flex items-start space-x-2 mt-4 mb-6">
+                        <input
+                          type="checkbox"
+                          id="terms"
+                          checked={acceptedTerms}
+                          onChange={(e) => setAcceptedTerms(e.target.checked)}
+                          className="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
+                        />
+                        <label htmlFor="terms" className="text-sm text-muted-foreground cursor-pointer">
+                          Al registrarte, aceptas nuestros{" "}
+                          <a href="#" className="underline hover:text-primary transition-colors">
+                            términos de servicios
+                          </a>{" "}
+                          y nuestra{" "}
+                          <a href="#" className="underline hover:text-primary transition-colors">
+                            política de privacidad
+                          </a>
+                          .
+                        </label>
+                      </div>
                       <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? "Creating account..." : "Create Account"}
+                        {isLoading ? "Creando cuenta..." : "Crear Cuenta"}
                       </Button>
                     </form>
 
