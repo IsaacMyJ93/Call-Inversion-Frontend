@@ -14,25 +14,25 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 // Metadatos globales de la aplicación (título, descripción, iconos, etc.)
 export const metadata: Metadata = {
-  title: 'RiskParity - Master Your Wealth',
-  description: 'Investment simulator based on risk parity. Build balanced portfolios and grow your wealth intelligently.',
-  generator: 'v0.app',
+  title: 'Call-Inversion - Master Your Wealth',
+  description: 'Simulador de inversión basado en Call-Inversion. Crea carteras equilibradas y aumenta tu patrimonio de forma inteligente.',
+  generator: 'By Call-Inversion Team',
   icons: {
     icon: [
+      // {
+      //   url: '/favicon.png',
+      //   media: '(prefers-color-scheme: light)',
+      // },
+      // {
+      //   url: '/favicon.png',
+      //   media: '(prefers-color-scheme: dark)',
+      // },
       {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
+        url: '/favicon.png',
+        type: 'image/png',
       },
     ],
-    apple: '/apple-icon.png',
+    apple: '/favicon.png',
   },
 }
 
