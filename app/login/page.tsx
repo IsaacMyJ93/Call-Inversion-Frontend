@@ -291,19 +291,18 @@ export default function LoginPage() {
                   </CardContent>
                 </Card>
               </TabsContent>
-
               {/* ======================================= */}
               {/*  SIGN UP                                */}
               {/* ======================================= */}
               <TabsContent value="signup">
                 <Card className="border-0 shadow-none">
                   <CardHeader className="px-0 pt-0">
-                    <CardTitle className="text-2xl">Crea Una Cuenta</CardTitle>
-                    <CardDescription>
-                      Comienza a construir tu cartera optimizada hoy
+                    <CardTitle className="text-2xl text-center">Crear una Cuenta</CardTitle>
+                    <CardDescription className="text-center">
+                      Comienza a construir tu cartera optimizada hoy.
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="px-0 pb-0">
+                  <CardContent className="px-2 pb-0">
                     <form onSubmit={handleSignUp} className="space-y-4">
                       <div className="space-y-2">
                         <Label htmlFor="signup-name">Nombre completo</Label>
@@ -361,13 +360,13 @@ export default function LoginPage() {
                         />
                         <label htmlFor="terms" className="text-sm text-muted-foreground cursor-pointer">
                           Al registrarte, aceptas nuestros{" "}
-                          <a href="#" className="underline hover:text-primary transition-colors">
+                          <Link href="/terms" target="_blank" className="underline hover:text-primary transition-colors">
                             términos de servicios
-                          </a>{" "}
+                          </Link>{" "}
                           y nuestra{" "}
-                          <a href="#" className="underline hover:text-primary transition-colors">
+                          <Link href="/privacy-policy" prefetch={true} target="_blank" className="underline hover:text-primary transition-colors">
                             política de privacidad
-                          </a>
+                          </Link>
                           .
                         </label>
                       </div>
