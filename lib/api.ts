@@ -1,34 +1,62 @@
-
-// Importa la librería axios para hacer peticiones HTTP
-import axios from 'axios';
-import { supabase } from './supabase'; // Importamos Supabase
+import { supabase } from './supabase'; 
 
 /**
- * Envía los datos del formulario al backend (Node.js) para calcular la cartera.
- * Incluye el Token JWT de Supabase para autenticar la petición.
- * * @param formData - Los datos introducidos por el usuario (capital, riesgo, etc.)
- * @returns El JSON con los resultados de la API
+ * Contrato de respuesta del Backend (Call Inversion Engine)
  */
-export const fetchCalculation = async (formData: any) => {
-  // 1. Le pedimos a Supabase la sesión actual (El token JWT está dentro de la sesión)
-  const { data: { session } } = await supabase.auth.getSession();
-  
-  // 2. Extraemos el Token JWT
-  const token = session?.access_token;
+export interface InversionResponse {
+  resultados: {
+    añosEstimados: number;
+    rentabilidadMediaAplicada: string;
+    peorCaidaEstimada: string;
+  };
+  cartera: Array<{
+    simbolo: string;
+    nombre: string;
+    rentabilidadAsignada: string;
+    pesoCartera: string;
+    capitalAsignado: string;
+  }>;
+  historicoGrafica: Array<{
+    año: number;
+    valor: number;
+  }>;
+}
 
-  // Validación de seguridad: Si no hay token, cortamos la ejecución aquí mismo
-  if (!token) {
-    throw new Error("No estás autenticado. Por favor, inicia sesión de nuevo.");
+/**
+ * FUNCIÓN MAESTRA DE CÁLCULO
+ * Se encarga de: 
+ * 1. Obtener el token de Supabase.
+ * 2. Enviar los datos al Backend (Node.js).
+ * 3. Manejar errores de seguridad o de cálculo.
+ */
+export const fetchProyeccionInversion = async (formData: any): Promise<InversionResponse> => {
+  
+  // 1. Obtener la sesión activa de Supabase para sacar el JWT
+  const { data: { session }, error: authError } = await supabase.auth.getSession();
+  
+  if (authError || !session?.access_token) {
+    throw new Error("Sesión no válida. Por favor, inicia sesión de nuevo.");
   }
 
-  // 3. Enviamos la petición al backend anexando el Token en la cabecera
-  const { data } = await axios.post('http://127.0.0.1:8080/api/calculadora', formData, {
+  const token = session.access_token;
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8080/api';
+
+  // 2. Petición al Backend usando fetch 
+  const response = await fetch(`${API_URL}/calculadora`, {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}` // Aquí le enseñamos el token al backend
-    }
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}` // El escudo que programaste en el middleware
+    },
+    body: JSON.stringify(formData),
   });
 
-  // 4. Retorna la respuesta recibida del backend
-  return data;
+  // 3. Gestión de errores de respuesta
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Error en el motor de cálculo del backend");
+  }
+
+  // 4. Devolvemos los datos tipados
+  return response.json();
 };

@@ -21,6 +21,10 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 
+// Importamos la función para llamar al backend y el tipo de respuesta
+import { fetchProyeccionInversion, InversionResponse } from "@/lib/api"
+import { toast } from 'react-hot-toast';
+
 
 // Componente principal de la página de la calculadora de portafolio
 export default function CalculatorPage() {
@@ -45,19 +49,43 @@ export default function CalculatorPage() {
     e.preventDefault();
     setIsCalculating(true);
 
-    // Simula un retardo para el cálculo (por ejemplo, llamada a API)
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      // 1. Mapeamos los datos al formato que espera tu servidor Node.js
+      const payload = {
+        capital: Number(formData.initialCapital),
+        beneficioEsperado: Number(formData.expectedReturn),
+        riesgo: formData.riskLevel.charAt(0).toUpperCase() + formData.riskLevel.slice(1) // "Medium"
+      };
 
-    setIsCalculating(false);
-    // Redirige a la página de resultados
-    router.push("/dashboard/results");
+      // 2. Llamada real a tu API (lib/api.ts ya gestiona el Token de Supabase solo)
+      const result = await fetchProyeccionInversion(payload);
+
+      console.log("¡Cálculo exitoso!", result);
+
+      // 3. PERSISTENCIA: Como vamos a cambiar de página, guardamos el resultado
+      // Puedes usar localStorage temporalmente para que la página de /results los lea
+      localStorage.setItem("lastResult", JSON.stringify(result));
+
+      // 4. Navegación
+      router.push("/dashboard/results");
+
+      // Simula un retardo para el cálculo (por ejemplo, llamada a API)
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+    } catch (error: any) {
+      console.error("Fallo en el motor:", error);
+      // Notificamos al usuario si el servidor está apagado o el token falló
+      alert(error.message || "Error al conectar con el servidor 8080");
+    } finally {
+      setIsCalculating(false);
+    }
   };
 
   // Opciones de nivel de riesgo para el usuario
   const riskLevels = [
-    { value: "low", label: "Low Risk", description: "Conservative approach, stable returns", icon: Shield },
-    { value: "medium", label: "Medium Risk", description: "Balanced growth and stability", icon: Target },
-    { value: "high", label: "High Risk", description: "Aggressive growth potential", icon: TrendingUp },
+    { value: "low", label: "Bajo", description: "Enfoque conservador, rentabilidad estable, caídas mínimas.", icon: Shield },
+    { value: "medium", label: "Medio", description: "Crecimiento equilibrado y estabilidad, caídas moderadas.", icon: Target },
+    { value: "high", label: "Alto", description: "Potencial de crecimiento agresivo, caídas significativas.", icon: TrendingUp },
   ];
 
   // Renderizado del formulario y tarjetas
@@ -218,8 +246,8 @@ export default function CalculatorPage() {
                       type="button"
                       onClick={() => setFormData({ ...formData, riskLevel: level.value })}
                       className={`p-4 rounded-lg border-2 text-left transition-all ${formData.riskLevel === level.value
-                          ? "border-primary bg-primary/5"
-                          : "border-border hover:border-primary/30"
+                        ? "border-primary bg-primary/5"
+                        : "border-border hover:border-primary/30"
                         }`}
                     >
                       <div className="flex items-center gap-3 mb-2">

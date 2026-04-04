@@ -3,11 +3,16 @@
 "use client";
 
 // Importaciones de librerías y componentes UI
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Calendar, TrendingUp, TrendingDown, ArrowLeft, Download, Share2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Calendar, TrendingUp, TrendingDown, ArrowLeft,
+  Download, Share2, RefreshCw, PieChart as PieIcon
+} from "lucide-react";
 import {
   Table,
   TableBody,
@@ -29,51 +34,39 @@ import {
   Cell,
   Legend,
 } from "recharts";
+// Importamos la función para llamar al backend y el tipo de respuesta
+import { InversionResponse } from "@/lib/api";
 
-
-// Datos simulados de ejemplo para mostrar resultados de portafolio
-const portfolioData = {
-  resultados: {
-    añosEstimados: 11, // Horizonte de inversión en años
-    rentabilidadMediaAplicada: "9.45%", // Rentabilidad media anual
-    peorCaidaEstimada: "-17.18%" // Peor caída estimada
-  },
-  cartera: [
-    { simbolo: "KO", nombre: "The Coca-Cola Company", pesoCartera: "47.73%", capitalAsignado: "4,772 €" },
-    { simbolo: "AAPL", nombre: "Apple Inc.", pesoCartera: "52.27%", capitalAsignado: "5,227 €" }
-  ],
-  historicoGrafica: [
-    { año: 0, valor: 10000 },
-    { año: 1, valor: 10945 },
-    { año: 2, valor: 11980 },
-    { año: 3, valor: 13112 },
-    { año: 4, valor: 14352 },
-    { año: 5, valor: 15708 },
-    { año: 6, valor: 17193 },
-    { año: 7, valor: 18817 },
-    { año: 8, valor: 20595 },
-    { año: 9, valor: 22541 },
-    { año: 10, valor: 24671 },
-    { año: 11, valor: 27500 }
-  ]
-};
-
-// Datos para el gráfico de pastel (distribución de activos)
-const pieData = [
-  { name: "KO", value: 47.73, color: "var(--chart-1)" },
-  { name: "AAPL", value: 52.27, color: "var(--chart-2)" },
-];
-
-// Configuración de animación para los componentes
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5 }
-};
-
-
-// Componente principal de la página de resultados del portafolio
 export default function ResultsPage() {
+  const router = useRouter();
+
+  // 1. Estado para los datos REALES
+  const [data, setData] = useState<InversionResponse | null>(null);
+
+  useEffect(() => {
+    // 2. Recuperamos el cálculo del localStorage
+    const savedData = localStorage.getItem("lastResult");
+    if (savedData) {
+      setData(JSON.parse(savedData));
+    } else {
+      router.push("/dashboard"); // Si no hay datos, volvemos atrás
+    }
+  }, [router]);
+
+  if (!data) {
+    return <div className="flex h-screen items-center justify-center">Cargando resultados...</div>;
+  }
+
+  // 3. Adaptamos los datos para el gráfico de Pastel (PieChart)
+  // Mapeamos los activos de la cartera al formato que necesita Recharts
+  const pieData = data.cartera.map((asset, index) => ({
+    name: asset.simbolo,
+    value: parseFloat(asset.pesoCartera.replace('%', '')),
+    color: `var(--chart-${(index % 5) + 1})` // Cicla entre los colores definidos en tu CSS
+  }));
+
+
+  // Componente principal de la página de resultados del portafolio
   return (
     <div className="max-w-7xl mx-auto">
       {/* Encabezado de la página con acciones rápidas */}
@@ -132,7 +125,7 @@ export default function ResultsPage() {
               <div>
                 <p className="text-sm text-muted-foreground mb-1">Investment Horizon</p>
                 <p className="text-3xl font-bold text-foreground">
-                  {portfolioData.resultados.añosEstimados}
+                  {data.resultados.añosEstimados}
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">years</p>
               </div>
@@ -150,7 +143,7 @@ export default function ResultsPage() {
               <div>
                 <p className="text-sm text-muted-foreground mb-1">Mean Return</p>
                 <p className="text-3xl font-bold text-chart-1">
-                  {portfolioData.resultados.rentabilidadMediaAplicada}
+                  {data.resultados.rentabilidadMediaAplicada}
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">annually</p>
               </div>
@@ -168,7 +161,7 @@ export default function ResultsPage() {
               <div>
                 <p className="text-sm text-muted-foreground mb-1">Max Drawdown</p>
                 <p className="text-3xl font-bold text-destructive">
-                  {portfolioData.resultados.peorCaidaEstimada}
+                  {data.resultados.peorCaidaEstimada}
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">worst case</p>
               </div>
@@ -197,7 +190,7 @@ export default function ResultsPage() {
             <div className="h-[350px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
-                  data={portfolioData.historicoGrafica}
+                  data={data.historicoGrafica}
                   margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
                 >
                   <defs>
@@ -321,7 +314,7 @@ export default function ResultsPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {portfolioData.cartera.map((asset, index) => (
+                  {data.cartera.map((asset, index) => (
                     <TableRow key={index} className="hover:bg-secondary/30 transition-colors">
                       <TableCell>
                         <div className="flex items-center gap-3">
@@ -359,8 +352,8 @@ export default function ResultsPage() {
         transition={{ duration: 0.5, delay: 0.4 }}
         className="text-xs text-muted-foreground text-center mt-8 max-w-2xl mx-auto"
       >
-        This is a simulation based on historical data and risk parity principles. 
-        Past performance does not guarantee future results. Please consult with a 
+        This is a simulation based on historical data and risk parity principles.
+        Past performance does not guarantee future results. Please consult with a
         financial advisor before making investment decisions.
       </motion.p>
     </div>
