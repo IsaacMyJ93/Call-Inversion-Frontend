@@ -2,6 +2,8 @@
 // "use client" es necesario para usar hooks y estado en este componente, ya que Next.js 13+ tiene un enfoque de renderizado híbrido (server + client).
 "use client";
 
+// Pagina de login 
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
