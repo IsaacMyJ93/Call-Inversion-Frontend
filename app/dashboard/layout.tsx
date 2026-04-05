@@ -14,8 +14,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 const navItems = [
-  { href: "/dashboard", label: "Calculator", icon: Calculator },
-  { href: "/dashboard/results", label: "Results", icon: PieChart },
+  { href: "/dashboard", label: "Calculadora", icon: Calculator },
+  { href: "/dashboard/results", label: "Resultados", icon: PieChart },
 ];
 
 export default function AppLayout({ children }: { children: ReactNode }) {

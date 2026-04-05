@@ -309,11 +309,11 @@ export default function CalculatorPage() {
                     {isCalculating ? (
                       <>
                         <Calculator className="mr-2 w-5 h-5 animate-pulse" />
-                        Calculating...
+                        Calculando...
                       </>
                     ) : (
                       <>
-                        Calculate Portfolio
+                        Calcular Portafolio
                         <ArrowRight className="ml-2 w-5 h-5" />
                       </>
                     )}
