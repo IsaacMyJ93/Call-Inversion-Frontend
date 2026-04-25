@@ -1,3 +1,4 @@
+// Pagina de resultados
 
 // Indica que este archivo es un componente del lado del cliente en Next.js
 "use client";
@@ -83,11 +84,11 @@ export default function ResultsPage() {
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-2"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Calculator
+            Atras a la calculadora
           </Link>
-          <h1 className="text-3xl font-bold text-foreground">Portfolio Results</h1>
+          <h1 className="text-3xl font-bold text-foreground">Resultados del Portafolio</h1>
           <p className="text-muted-foreground mt-1">
-            Your optimized risk parity portfolio allocation
+            Asignación optimizada de su portafolio según la paridad de riesgo
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -95,18 +96,18 @@ export default function ResultsPage() {
           <Link href="/dashboard">
             <Button variant="outline" size="sm">
               <RefreshCw className="w-4 h-4 mr-2" />
-              Recalculate
+              Recalcular
             </Button>
           </Link>
           {/* Botón para compartir */}
           <Button variant="outline" size="sm">
             <Share2 className="w-4 h-4 mr-2" />
-            Share
+            Compartir
           </Button>
           {/* Botón para exportar */}
           <Button variant="outline" size="sm">
             <Download className="w-4 h-4 mr-2" />
-            Export
+            Exportar
           </Button>
         </div>
       </motion.div>
@@ -123,11 +124,11 @@ export default function ResultsPage() {
           <CardContent className="pt-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Investment Horizon</p>
+                <p className="text-sm text-muted-foreground mb-1">Horizonte de Inversión</p>
                 <p className="text-3xl font-bold text-foreground">
                   {data.resultados.añosEstimados}
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">years</p>
+                <p className="text-sm text-muted-foreground mt-1">años</p>
               </div>
               <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
                 <Calendar className="w-6 h-6 text-foreground" />
@@ -141,11 +142,11 @@ export default function ResultsPage() {
           <CardContent className="pt-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Mean Return</p>
+                <p className="text-sm text-muted-foreground mb-1">Rentabilidad Media</p>
                 <p className="text-3xl font-bold text-chart-1">
                   {data.resultados.rentabilidadMediaAplicada}
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">annually</p>
+                <p className="text-sm text-muted-foreground mt-1">anualmente</p>
               </div>
               <div className="w-12 h-12 rounded-xl bg-chart-1/10 flex items-center justify-center">
                 <TrendingUp className="w-6 h-6 text-chart-1" />
@@ -159,11 +160,11 @@ export default function ResultsPage() {
           <CardContent className="pt-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Max Drawdown</p>
+                <p className="text-sm text-muted-foreground mb-1">Peor Caída Estimada</p>
                 <p className="text-3xl font-bold text-destructive">
                   {data.resultados.peorCaidaEstimada}
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">worst case</p>
+                <p className="text-sm text-muted-foreground mt-1">peor caso</p>
               </div>
               <div className="w-12 h-12 rounded-xl bg-destructive/10 flex items-center justify-center">
                 <TrendingDown className="w-6 h-6 text-destructive" />
@@ -183,8 +184,8 @@ export default function ResultsPage() {
         {/* Gráfico de área: crecimiento de la inversión */}
         <Card className="lg:col-span-7">
           <CardHeader>
-            <CardTitle>Investment Growth</CardTitle>
-            <CardDescription>Projected portfolio value over time</CardDescription>
+            <CardTitle>Crecimiento de la Inversión</CardTitle>
+            <CardDescription>Valor proyectado del portafolio a lo largo del tiempo</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-[350px]">
@@ -242,8 +243,8 @@ export default function ResultsPage() {
         {/* Gráfico de pastel: distribución de activos */}
         <Card className="lg:col-span-3">
           <CardHeader>
-            <CardTitle>Asset Allocation</CardTitle>
-            <CardDescription>Portfolio distribution</CardDescription>
+            <CardTitle>Distribución de Activos</CardTitle>
+            <CardDescription>Distribución del portafolio</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-[350px] flex flex-col items-center justify-center">
@@ -299,18 +300,18 @@ export default function ResultsPage() {
       >
         <Card>
           <CardHeader>
-            <CardTitle>Portfolio Details</CardTitle>
-            <CardDescription>Detailed breakdown of your asset allocation</CardDescription>
+            <CardTitle>Detalles del Portafolio</CardTitle>
+            <CardDescription>Desglose detallado de la asignación de activos</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="rounded-lg border border-border overflow-hidden">
               <Table>
                 <TableHeader>
                   <TableRow className="bg-secondary/50">
-                    <TableHead className="font-semibold">Symbol</TableHead>
-                    <TableHead className="font-semibold">Name</TableHead>
-                    <TableHead className="font-semibold text-right">Weight</TableHead>
-                    <TableHead className="font-semibold text-right">Capital Allocated</TableHead>
+                    <TableHead className="font-semibold">Símbolo</TableHead>
+                    <TableHead className="font-semibold">Nombre</TableHead>
+                    <TableHead className="font-semibold text-right">Peso</TableHead>
+                    <TableHead className="font-semibold text-right">Capital Asignado</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -336,9 +337,9 @@ export default function ResultsPage() {
               </Table>
             </div>
 
-            {/* Fila de total del portafolio */}
+            {/* Fila de total del portafolio  */}
             <div className="flex items-center justify-between mt-4 p-4 rounded-lg bg-primary text-primary-foreground">
-              <span className="font-semibold">Total Portfolio Value</span>
+              <span className="font-semibold">Valor Total del Portafolio</span>
               <span className="text-2xl font-bold">€10,000</span>
             </div>
           </CardContent>
@@ -352,9 +353,9 @@ export default function ResultsPage() {
         transition={{ duration: 0.5, delay: 0.4 }}
         className="text-xs text-muted-foreground text-center mt-8 max-w-2xl mx-auto"
       >
-        This is a simulation based on historical data and risk parity principles.
-        Past performance does not guarantee future results. Please consult with a
-        financial advisor before making investment decisions.
+        Esta es una simulación basada en datos históricos y principios de paridad de riesgo.
+        El rendimiento pasado no garantiza resultados futuros. Por favor, consulte con un
+        asesor financiero antes de tomar decisiones de inversión.
       </motion.p>
     </div>
   );

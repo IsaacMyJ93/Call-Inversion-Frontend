@@ -289,7 +289,7 @@ export default function CalculatorPage() {
                         €{parseInt(formData.initialCapital || "0").toLocaleString()}
                       </span>
                       <span className="text-primary-foreground/70">
-                        al {formData.expectedReturn}% retorno objetivo
+                        al {formData.expectedReturn}% de retorno objetivo
                       </span>
                       <span className="text-primary-foreground/70 capitalize">
                         {/*• {formData.riskLevel} Riesgo.*/}
@@ -309,11 +309,11 @@ export default function CalculatorPage() {
                     {isCalculating ? (
                       <>
                         <Calculator className="mr-2 w-5 h-5 animate-pulse" />
-                        Calculating...
+                        Calculando...
                       </>
                     ) : (
                       <>
-                        Calculate Portfolio
+                        Calcular Portafolio
                         <ArrowRight className="ml-2 w-5 h-5" />
                       </>
                     )}
