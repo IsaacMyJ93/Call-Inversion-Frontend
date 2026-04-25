@@ -1,16 +1,13 @@
 // Es el Layout de la pagina Calculator y Results
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { TrendingUp, Calculator, PieChart, LogOut, User, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
-// Para extraer el usuario actual de la DB
-import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 const navItems = [
@@ -20,6 +17,59 @@ const navItems = [
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  // 1. Estados para el usuario
+  const [userName, setUserName] = useState<string>("");
+  const [userEmail, setUserEmail] = useState<string>("");
+  const [userInitials, setUserInitials] = useState<string>("US"); // "US" por defecto
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
+
+  // 2. Efecto para obtener el usuario de Supabase e iniciales
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+
+        if (error || !user) {
+          // Si no hay usuario, forzar salida por seguridad
+          router.push("/");
+          return;
+        }
+
+        // Extrae el nombre completo del usuario desde los metadatos de autenticación (por ejemplo, de Google OAuth)
+        // Si no está disponible, uso la parte antes del '@' en el email como nombre
+        // Si tampoco hay email, uso un fallback genérico
+        const fullName = user.user_metadata?.full_name
+          || user.email?.split('@')[0]
+          || "Usuario Fintech";
+
+        setUserName(fullName);
+        setUserEmail(user.email || "");
+
+        // --- LÓGICA DE INICIALES AÑADIDA ---
+        const nameParts = fullName.trim().split(' ');
+        const initials = nameParts.length > 1
+          ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase() // Primera letra del nombre y del último apellido
+          : fullName.substring(0, 2).toUpperCase(); // Si es una sola palabra, coge las dos primeras letras
+
+        setUserInitials(initials);
+
+      } catch (err) {
+        console.error("Error cargando perfil:", err);
+      } finally {
+        setIsLoadingUser(false);
+      }
+    }
+
+    fetchUser();
+  }, [router]);
+
+  // 3. Función de Logout 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/");
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -60,29 +110,57 @@ export default function AppLayout({ children }: { children: ReactNode }) {
 
         <div className="p-4 border-t border-sidebar-border">
           <div className="flex items-center gap-3 px-4 py-3">
-            <div className="w-9 h-9 rounded-full bg-sidebar-accent flex items-center justify-center">
-              <User className="w-5 h-5 text-sidebar-foreground" />
+            {/* EL AVATAR DE INICIALES */}
+            <div className="w-9 h-9 shrink-0 rounded-full bg-primary/10 border-2 border-white flex items-center justify-center">
+              {isLoadingUser ? (
+              <User className="w-4 h-4 text-primary/50 animate-pulse" />
+              ) : (
+              <span className="text-sm font-bold text-white">
+              {userInitials}
+              </span>
+              )}
             </div>
+
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-sidebar-foreground truncate">Demo User</p>
-              <p className="text-xs text-sidebar-foreground/60 truncate">demo@example.com</p>
+              {isLoadingUser ? (
+                // Skeleton Loader mientras carga (UX Pixel-Perfect)
+                <div className="space-y-2 animate-pulse">
+                  <div className="h-3 w-20 bg-sidebar-accent rounded"></div>
+                  <div className="h-2 w-24 bg-sidebar-accent rounded"></div>
+                </div>
+              ) : (
+                // Datos reales del usuario
+                <>
+                  <p className="text-sm font-medium text-sidebar-foreground truncate" title={userName}>
+                    {userName}
+                  </p>
+                  <p className="text-xs text-sidebar-foreground/60 truncate" title={userEmail}>
+                    {userEmail}
+                  </p>
+                </>
+              )}
             </div>
           </div>
+
           <div className="flex gap-2 mt-2">
             <Button variant="ghost" size="sm" className="flex-1 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50">
               <Settings className="w-4 h-4 mr-2" />
               Ajustes
             </Button>
-            <Link href="/">
-              <Button variant="ghost" size="sm" className="text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50">
-                <LogOut className="w-4 h-4" />
-              </Button>
-            </Link>
+            {/* Botón LogOut actualizado con la función asíncrona */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleLogout}
+              className="text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+              title="Cerrar sesión"
+            >
+              <LogOut className="w-4 h-4" />
+            </Button>
           </div>
         </div>
       </aside>
 
-      {/* Mobile Header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 bg-background/80 backdrop-blur-md border-b border-border z-50">
         <div className="flex items-center justify-between px-4 py-3">
           <Link href="/" className="flex items-center gap-2">
