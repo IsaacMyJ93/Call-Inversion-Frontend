@@ -124,11 +124,11 @@ export default function ResultsPage() {
           <CardContent className="pt-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Horizonte de Inversión</p>
+                <p className="text-sm text-muted-foreground mb-1">Tiempo de Inversión</p>
                 <p className="text-3xl font-bold text-foreground">
                   {data.resultados.añosEstimados}
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">años</p>
+                <p className="text-sm text-muted-foreground mt-1">Años</p>
               </div>
               <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
                 <Calendar className="w-6 h-6 text-foreground" />
@@ -146,7 +146,7 @@ export default function ResultsPage() {
                 <p className="text-3xl font-bold text-chart-1">
                   {data.resultados.rentabilidadMediaAplicada}
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">anualmente</p>
+                <p className="text-sm text-muted-foreground mt-1">Anual</p>
               </div>
               <div className="w-12 h-12 rounded-xl bg-chart-1/10 flex items-center justify-center">
                 <TrendingUp className="w-6 h-6 text-chart-1" />
@@ -164,7 +164,7 @@ export default function ResultsPage() {
                 <p className="text-3xl font-bold text-destructive">
                   {data.resultados.peorCaidaEstimada}
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">peor caso</p>
+                <p className="text-sm text-muted-foreground mt-1">En el historial registrado</p>
               </div>
               <div className="w-12 h-12 rounded-xl bg-destructive/10 flex items-center justify-center">
                 <TrendingDown className="w-6 h-6 text-destructive" />
@@ -244,7 +244,7 @@ export default function ResultsPage() {
         <Card className="lg:col-span-3">
           <CardHeader>
             <CardTitle>Distribución de Activos</CardTitle>
-            <CardDescription>Distribución del portafolio</CardDescription>
+            <CardDescription>Peso del portafolio</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-[350px] flex flex-col items-center justify-center">
@@ -340,7 +340,16 @@ export default function ResultsPage() {
             {/* Fila de total del portafolio  */}
             <div className="flex items-center justify-between mt-4 p-4 rounded-lg bg-primary text-primary-foreground">
               <span className="font-semibold">Valor Total del Portafolio</span>
-              <span className="text-2xl font-bold">€10,000</span>
+              <span className="text-2xl font-bold">
+                {data.cartera
+                  .reduce(
+                    (sum, asset) =>
+                      sum +
+                      parseFloat(asset.capitalAsignado.replace(/[^0-9.-]+/g, "")),
+                    0
+                  )
+                  .toLocaleString("es-ES", { minimumFractionDigits: 0 })} €
+              </span>
             </div>
           </CardContent>
         </Card>

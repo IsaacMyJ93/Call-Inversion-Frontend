@@ -286,7 +286,7 @@ export default function CalculatorPage() {
                     <p className="text-primary-foreground/70 text-sm">Resumen de inversión</p>
                     <div className="flex items-baseline gap-4 flex-wrap">
                       <span className="text-2xl font-bold">
-                        €{parseInt(formData.initialCapital || "0").toLocaleString()}
+                        {parseInt(formData.initialCapital || "0").toLocaleString()} €
                       </span>
                       <span className="text-primary-foreground/70">
                         al {formData.expectedReturn}% de retorno objetivo
