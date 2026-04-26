@@ -37,6 +37,9 @@ import {
 } from "recharts";
 // Importamos la función para llamar al backend y el tipo de respuesta
 import { InversionResponse } from "@/lib/api";
+import { exportPortfolioToCSV } from "@/lib/export-csv";
+import { sharePortfolio } from "@/lib/share";
+import toast from 'react-hot-toast';
 
 export default function ResultsPage() {
   const router = useRouter();
@@ -100,14 +103,21 @@ export default function ResultsPage() {
             </Button>
           </Link>
           {/* Botón para compartir */}
-          <Button variant="outline" size="sm">
+          <Button variant="outline"
+            size="sm"
+            onClick={() => sharePortfolio(data, (msg) => toast.success(msg))}
+          >
             <Share2 className="w-4 h-4 mr-2" />
             Compartir
           </Button>
           {/* Botón para exportar */}
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => exportPortfolioToCSV(data)}
+          >
             <Download className="w-4 h-4 mr-2" />
-            Exportar
+            Exportar CSV
           </Button>
         </div>
       </motion.div>

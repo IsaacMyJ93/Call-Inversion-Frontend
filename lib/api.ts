@@ -4,6 +4,12 @@ import { supabase } from './supabase';
  * Contrato de respuesta del Backend (Call Inversion Engine)
  */
 export interface InversionResponse {
+  
+ parametros: {
+    capitalInicial: number;
+    objetivo: number;
+    riesgoElegido: string;
+  };
   resultados: {
     añosEstimados: number;
     rentabilidadMediaAplicada: string;

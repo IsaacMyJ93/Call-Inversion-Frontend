@@ -9,6 +9,20 @@ import { TrendingUp, Calculator, PieChart, LogOut, User, Settings } from "lucide
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import toast from 'react-hot-toast';
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
+import { ThemeProvider } from "@/components/theme-provider";
+import { useTheme } from "next-themes";
 
 const navItems = [
   { href: "/dashboard", label: "Calculadora", icon: Calculator },
@@ -18,6 +32,7 @@ const navItems = [
 export default function AppLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
 
   // 1. Estados para el usuario
   const [userName, setUserName] = useState<string>("");
@@ -113,11 +128,11 @@ export default function AppLayout({ children }: { children: ReactNode }) {
             {/* EL AVATAR DE INICIALES */}
             <div className="w-9 h-9 shrink-0 rounded-full bg-primary/10 border-2 border-white flex items-center justify-center">
               {isLoadingUser ? (
-              <User className="w-4 h-4 text-primary/50 animate-pulse" />
+                <User className="w-4 h-4 text-primary/50 animate-pulse" />
               ) : (
-              <span className="text-sm font-bold text-white">
-              {userInitials}
-              </span>
+                <span className="text-sm font-bold text-white">
+                  {userInitials}
+                </span>
               )}
             </div>
 
@@ -143,10 +158,79 @@ export default function AppLayout({ children }: { children: ReactNode }) {
           </div>
 
           <div className="flex gap-2 mt-2">
-            <Button variant="ghost" size="sm" className="flex-1 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50">
-              <Settings className="w-4 h-4 mr-2" />
-              Ajustes
-            </Button>
+            {/* --- MODAL DE AJUSTES --- */}
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="flex-1 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Ajustes
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Ajustes de la Cuenta</DialogTitle>
+                  <DialogDescription>
+                    Gestiona tus preferencias y la configuración de las simulaciones.
+                  </DialogDescription>
+                </DialogHeader>
+
+                <div className="grid gap-6 py-4">
+                  {/* Sección 1: Perfil (Solo lectura para la demo) */}
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-medium leading-none text-muted-foreground uppercase tracking-wider">Perfil</h4>
+                    <div className="grid gap-2">
+                      <Label htmlFor="name">Nombre de Usuario</Label>
+                      <Input id="name" value={userName} disabled className="bg-muted/50" />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="email">Correo Electrónico</Label>
+                      <Input id="email" value={userEmail} disabled className="bg-muted/50" />
+                    </div>
+                  </div>
+
+                  {/* Sección 2: Preferencias (Interruptores visuales) */}
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-medium leading-none text-muted-foreground uppercase tracking-wider">Preferencias</h4>
+
+                    <div className="flex items-center justify-between rounded-lg border p-4 shadow-sm">
+                      <div className="space-y-0.5">
+                        <Label className="text-base">Notificaciones</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Recibir alertas de volatilidad.
+                        </p>
+                      </div>
+                      <Switch
+                        defaultChecked
+                        onCheckedChange={(checked) => {
+                          if(!checked) toast.success("Notificaciones desactivadas");
+                        }}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between rounded-lg border p-4 shadow-sm">
+                      <div className="space-y-0.5">
+                        <Label className="text-base">Modo oscuro</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Activar el modo oscuro para la interfaz.
+                        </p>
+                      </div>
+                      <Switch 
+                        checked={theme === "dark"} 
+                        onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")} 
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-end gap-3 mt-4 border-t pt-4">
+                  <Button variant="outline" onClick={() => toast.success("Se ha enviado un correo para restablecer la contraseña.")}>
+                    Cambiar Contraseña
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+
+
             {/* Botón LogOut actualizado con la función asíncrona */}
             <Button
               variant="ghost"

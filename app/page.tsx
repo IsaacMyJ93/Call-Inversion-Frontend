@@ -106,12 +106,12 @@ export default function LandingPage() {
           >
             <Link href="/login">
               <Button size="lg" className="text-base px-8 py-6">
-                Get Started <ArrowRight className="ml-2 w-5 h-5" />
+                Comenzar ahora <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
             <Link href="#how-it-works">
               <Button variant="outline" size="lg" className="text-base px-8 py-6">
-                Learn More
+               Saber más
               </Button>
             </Link>
           </motion.div>
@@ -127,13 +127,12 @@ export default function LandingPage() {
         className="py-16 bg-primary text-primary-foreground"
       >
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 text-center">
             {/* Estadísticas destacadas de la plataforma */}
             {[
-              { value: "10K+", label: "Active Users" },
-              { value: "$500M+", label: "Assets Analyzed" },
-              { value: "99.9%", label: "Uptime" },
-              { value: "4.9/5", label: "User Rating" }
+              { value: "10K+", label: "Usuarios Activos" },
+              { value: "$500M+", label: "Activos Analizados" },
+              { value: "4.9/5", label: "Calificación de Usuarios" }
             ].map((stat, index) => (
               <motion.div
                 key={index}
@@ -321,9 +320,9 @@ export default function LandingPage() {
             </div>
             {/* Enlaces legales y de contacto */}
             <div className="flex items-center gap-8 text-sm text-muted-foreground">
-              <Link href="#" className="hover:text-foreground transition-colors">Términos</Link>
-              <Link href="#" className="hover:text-foreground transition-colors">Privacidad</Link>
-              <Link href="#" className="hover:text-foreground transition-colors">Contacto</Link>
+              <Link href="/terms" className="hover:text-foreground transition-colors">Términos</Link>
+              <Link href="/privacy-policy" className="hover:text-foreground transition-colors">Privacidad</Link>
+              <Link href="mailto:isaac.montero@comunidadunir.net" className="hover:text-foreground transition-colors">Contacto</Link>
             </div>
             <p className="text-sm text-muted-foreground">
               © 2024 Call Inversion. Todos los derechos reservados.
